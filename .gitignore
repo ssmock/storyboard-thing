@@ -1,5 +1,7 @@
 *.sln
 *.suo
+.vs/*
+dist/*
 
 # Logs
 logs
