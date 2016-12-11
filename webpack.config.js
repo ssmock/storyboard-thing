@@ -24,9 +24,21 @@ module.exports = {
         {
             test: /\.less$/,
             loader: "style-loader!css-loader!less-loader"
+        },
+        {
+            test: /\.html$/,
+            loader: 'html',
+            query: {
+                minimize: true
+            }
         }]
     },
     resolve: {
-        extensions: ['', '.js']
+        extensions: ['', '.js'],
+        root: path.resolve(__dirname),
+        alias: {
+            "~templates": "src/templates",
+            "~": "src"
+        }
     }
 };

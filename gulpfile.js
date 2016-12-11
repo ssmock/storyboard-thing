@@ -9,11 +9,13 @@ var webpackDevServer = require("webpack-dev-server");
 
 var webpackConfig = require("./webpack.config.js");
 
+var relativeDest = webpackConfig.output.publicPath;
+
 gulp.task("build", function () {
     webpack(getWebpackConfig(), webpackCallback);
 
     gulp.src('src/index.html')
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest(relativeDest));
 });
 
 gulp.task("build-watch", function () {
@@ -29,14 +31,14 @@ gulp.task("build-watch", function () {
     });
 
     gulp.src('src/index.html')
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest(relativeDest));
 });
 
 gulp.task("clean", function () {
     del("dist/*");
 
     gulp.src('src/index.html')
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest(relativeDest));
 });
 
 gulp.task("dev-server", function (callback) {
@@ -49,8 +51,8 @@ gulp.task("dev-server", function (callback) {
         .pipe(gulp.dest('dist'));
 
     new webpackDevServer(webpack(config), {
-        publicPath: "/" + config.output.publicPath,
-        contentBase: "dist/",
+        publicPath: relativeDest,
+        contentBase: relativeDest,
         stats: {
             colors: true
         },
