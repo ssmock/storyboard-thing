@@ -32,6 +32,7 @@
 
 .sb-main__middle__left {
     flex: 1;
+    display: flex;
 }
 
 .sb-main__middle__center {
@@ -41,4 +42,42 @@
 
 .sb-main__middle__right {
     flex: 1;
+    display: flex;
+}
+
+.sb-main__middle__button {
+    display: block;
+    color: #ddd!important;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    border: none;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(255,255,255,.3);
+    }
+}
+
+.sb-main__middle__button--left {
+    .sb-main__middle__button;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    margin-left: .5em;
+}
+
+.sb-main__middle__button--right {
+    .sb-main__middle__button;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin-right: .5em;
+}
+
+.sb-main__middle__button__icon {
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: 100%;
 }

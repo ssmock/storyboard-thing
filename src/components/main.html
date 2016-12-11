@@ -4,24 +4,20 @@
     </div>
     <div class="sb-main__middle">
         <div class="sb-main__middle__left">
-            &nbsp;
+            <router-link v-bind:to="previousPath" class="sb-main__middle__button--left">
+                <span class="sb-main__middle__button__icon glyphicon glyphicon-chevron-left"></span>
+            </router-link>
         </div>
         <div class="sb-main__middle__center">
             <router-view></router-view>
         </div>
         <div class="sb-main__middle__right">
-            &nbsp;
+            <router-link v-bind:to="nextPath" class="sb-main__middle__button--right">
+                <span class="sb-main__middle__button__icon glyphicon glyphicon-chevron-right"></span>
+            </router-link>
         </div>
     </div>
     <div class="sb-main__footer">
-        <router-link to="/a">
-            A
-        </router-link>
-        <router-link to="/b">
-            B
-        </router-link>
-        <router-link to="/c">
-            C
-        </router-link>
+        &nbsp;
     </div>
 </div>
