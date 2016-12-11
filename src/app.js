@@ -1,9 +1,10 @@
-const thing = require("~templates/app.html");
+const Vue = require("vue");
 
-const config = require("~/config.js");
-
-console.log(config);
+const main = require("~components/main.js");
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("app").innerHTML = thing;
+    var vm = new Vue({
+        el: "#app",
+        template: "<sb-main></sb-main>"
+    });
 });

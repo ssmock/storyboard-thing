@@ -34,11 +34,12 @@ module.exports = {
         }]
     },
     resolve: {
-        extensions: ['', '.js'],
+        extensions: ['', '.js', '.less', '.html', '.css'],
         root: path.resolve(__dirname),
         alias: {
-            "~templates": "src/templates",
-            "~": "src"
+            "~components": "src/components",
+            "~": "src",
+            vue: 'vue/dist/vue.js'
         }
     }
 };
