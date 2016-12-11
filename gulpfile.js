@@ -1,8 +1,13 @@
-﻿var gulp = require("gulp");
+﻿require("object-assign");
+
+var gulp = require("gulp");
 var gUtil = require("gulp-util");
 var path = require("path");
 var webpack = require("webpack");
 var del = require("del");
+var webpackDevServer = require("webpack-dev-server");
+
+var webpackConfig = require("./webpack.config.js");
 
 gulp.task("build", function () {
     webpack(getWebpackConfig(), webpackCallback);
@@ -27,42 +32,36 @@ gulp.task("build-watch", function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task("build-prod", function () {
-    del("dist/*").then(function () {
-        var ticks = Number(new Date());
-
-        var minifiedConfig = getWebpackConfig();
-
-        var optimize = new webpack.optimize.UglifyJsPlugin({ minimize: true });
-
-        minifiedConfig.plugins = [
-            optimize,
-            minifiedChunk
-        ];
-
-        minifiedConfig.plugins.push(optimize);
-        minifiedConfig.output.filename = "app.bundle." + ticks + ".min.js";
-
-        webpack(minifiedConfig, function (err, stats) {
-            webpackCallback(err, stats);
-        });
-
-        var nonMinifiedConfig = getWebpackConfig();
-
-        webpack(nonMinifiedConfig, function (err, stats) {
-            webpackCallback(err, stats);
-        });
-
-        gulp.src('src/index.html')
-            .pipe(gulp.dest('dist'));
-    });
-});
-
 gulp.task("clean", function () {
     del("dist/*");
 
     gulp.src('src/index.html')
         .pipe(gulp.dest('dist'));
+});
+
+gulp.task("dev-server", function (callback) {
+    var config = getWebpackConfig({
+        devtool: "eval",
+        debug: true
+    });
+
+    gulp.src('src/index.html')
+        .pipe(gulp.dest('dist'));
+
+    new webpackDevServer(webpack(config), {
+        publicPath: "/" + config.output.publicPath,
+        contentBase: "dist/",
+        stats: {
+            colors: true
+        },
+        plugins: [
+            new webpack.HotModuleReplacementPlugin()
+        ]
+    }).listen(8080, "localhost", function (err) {
+        if (err) throw new gUtil.PluginError("webpack-dev-server", err);
+
+        gUtil.log("dev-server", "http://localhost:8080/webpack-dev-server/index.html");
+    });
 });
 
 function webpackCallback(err, stats) {
@@ -77,36 +76,7 @@ function webpackCallback(err, stats) {
 }
 
 function getWebpackConfig(moreProps) {
-    var config = {
-        debug: true,
-        devtool: 'source-map',
-        entry: {
-            main: './src/start.jsx'
-        },
-        output: {
-            path: path.join(__dirname, './dist'),
-            filename: 'app.bundle.js'
-        },
-        module: {
-            loaders: [{
-                test: /\.jsx$|\.js$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/,
-                query: {
-                    presets: ['es2015', 'react']
-                }
-            },
-            {
-                test: /\.less$/,
-                loader: "style-loader!css-loader!less-loader"
-            }]
-        },
-        resolve: {
-            extensions: ['', '.js', '.jsx']
-        }
-    };
-
-    config = Object.assign({}, config, moreProps);
+    config = Object.assign({}, webpackConfig, moreProps);
 
     return config;
 }

@@ -1,16 +1,32 @@
-const webpack = require("webpack");
+var webpack = require("webpack");
+var path = require("path");
 
 module.exports = {
-    context: __dirname + "/src",
+    debug: true,
+    devtool: 'source-map',
     entry: {
-        app: "./app.js",
+        main: './src/app.js'
     },
     output: {
-        filename: "[name].bundle.js",
-        path: __dirname + "/dist/assets",
-        publicPath: "/assets",            // New
+        path: path.join(__dirname, './dist'),
+        publicPath: "dist/",
+        filename: 'app.bundle.js'
     },
-    devServer: {
-        contentBase: __dirname + "/src",  // New
+    module: {
+        loaders: [{
+            test: /\.js$/,
+            loader: 'babel-loader',
+            exclude: /node_modules/,
+            query: {
+                presets: ['es2015']
+            }
+        },
+        {
+            test: /\.less$/,
+            loader: "style-loader!css-loader!less-loader"
+        }]
     },
+    resolve: {
+        extensions: ['', '.js']
+    }
 };

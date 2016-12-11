@@ -1,3 +1,5 @@
-const thing = require("./thing.js");
+const thing = "WINGS!";
 
-console.log(thing);
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("app").innerHTML = thing;
+});
